@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "pratibhapkrl.github.io",
+    "section": "",
+    "text": "This is a pratibhapkrl website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\nplot(iris, cex= .5, pch=20, col= 'steelblue')"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  }
+]
