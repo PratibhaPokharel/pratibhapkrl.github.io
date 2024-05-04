@@ -1,6 +1,6 @@
 ---
 title: "EPPS 6323: Lab02 R programming basics II"
-author: "Pratibha"
+author: "Pratibha Pokharel"
 format: html
 editor: visual
 ---
@@ -62,13 +62,12 @@ barplot(freq_table, main = "Frequency of Tondu Responses",
         las = 2
 ```
 
-```{## 3) We can see lots of missing values in the dataset.}
-
+\`\`\`{## 3) We can see lots of missing values in the dataset.}
 
 ## 4) By removing those missing values with the code below as na.omit, we can clean the data. Previously there were 1690 data and after cleaning there were 1074 data.
 
-
 ## 5) We can get desprictive statistics from the relationship between Tondu and other variables including female, DPP, age, income, edu, Taiwanese and Econ_worse.
 
-## 6) Logistic Regression will be appropriate analysis method for votesai variable as it has binary data.    
-```
+## 6) Logistic Regression will be appropriate analysis method for votesai variable as it has binary data.
+
+\`\`\`
