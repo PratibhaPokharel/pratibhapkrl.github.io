@@ -1,0 +1,74 @@
+---
+title: "EPPS 6323: Lab02 R programming basics II"
+author: "Pratibha"
+format: html
+editor: visual
+---
+
+## 
+
+# R Programming Basic Commands
+
+(Adapted from ISLR Chapter 3 Lab: Introduction to R)
+
+## Indexing Data using \[\]
+
+```{r}
+library(haven) 
+TEDS_2016 <- 
+read_stata("TEDS_2016.dta") 
+
+# Remove rows with missing values
+Clean_TEDS_2016 <- na.omit(TEDS_2016)
+
+
+summary(Clean_TEDS_2016[c("Tondu", "female", "DPP", "age", "income", "edu", "Taiwanese", "Econ_worse")])
+
+cor(Clean_TEDS_2016[c("Tondu", "age", "income")], use = "complete.obs")
+plot(Clean_TEDS_2016$age, Clean_TEDS_2016$Tondu, xlab = "age", ylab = "Tondu", main = "Scatterplot of Tondu vs Age")
+
+chisq.test(Clean_TEDS_2016$Tondu, Clean_TEDS_2016$female)
+chisq.test(Clean_TEDS_2016$Tondu, Clean_TEDS_2016$DPP)
+chisq.test(Clean_TEDS_2016$Tondu, Clean_TEDS_2016$age)
+chisq.test(Clean_TEDS_2016$Tondu, Clean_TEDS_2016$income)
+chisq.test(Clean_TEDS_2016$Tondu, Clean_TEDS_2016$edu)
+chisq.test(Clean_TEDS_2016$Tondu, Clean_TEDS_2016$Taiwanese)
+chisq.test(Clean_TEDS_2016$Tondu, Clean_TEDS_2016$Econ_worse)
+
+summary(aov(Tondu ~ edu, data = Clean_TEDS_2016))
+boxplot(Tondu ~ edu, data = Clean_TEDS_2016, xlab = "Education Level", ylab = "Tondu", main = "Boxplot of Tondu by Education Level")
+
+
+
+# Assign labels to the Tondu variable
+Clean_TEDS_2016$Tondu <- factor(Clean_TEDS_2016$Tondu, labels = c("Unification now", 
+                                                     "Status quo, unif. in future", 
+                                                     "Status quo, decide later", 
+                                                     "Status quo forever", 
+                                                     "Status quo, indep. in future", 
+                                                     "Independence now", 
+                                                     "No response"))
+
+# Generate frequency table
+freq_table <- table(Clean_TEDS_2016$Tondu)
+print(freq_table)
+
+# Generate bar chart
+barplot(freq_table, main = "Frequency of Tondu Responses", 
+        xlab = "Tondu Categories", ylab = "Frequency")
+        col = "skyblue"
+        border = "black"
+        ylim = c(0, max(freq_table) * 1.1)  
+        las = 2
+```
+
+```{## 3) We can see lots of missing values in the dataset.}
+
+
+## 4) By removing those missing values with the code below as na.omit, we can clean the data. Previously there were 1690 data and after cleaning there were 1074 data.
+
+
+## 5) We can get desprictive statistics from the relationship between Tondu and other variables including female, DPP, age, income, edu, Taiwanese and Econ_worse.
+
+## 6) Logistic Regression will be appropriate analysis method for votesai variable as it has binary data.    
+```
