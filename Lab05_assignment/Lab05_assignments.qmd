@@ -1,0 +1,26 @@
+---
+title: "Lab05_assignment"
+uthor: "Pratibha Pokharel"
+editor: visual
+---
+
+## LaTeX
+
+Normalized linear combination:
+
+$(X_{1}), (X_{2}), . . . , (X_{p})$
+
+<br> $$  Z_1 = \phi_{11}X_1 +\phi_{21}X_2 +...+\phi_{p1}X_p $$ <br>
+
+$\sum_{j=1}^p\phi_{j1}^2 = 1$
+
+First principal component:
+
+$(\phi_{11}, . . . , \phi_{p1})$
+
+$\phi_1= (\phi_{11} \phi_{21} ... \phi_{p1})^T$
+
+```{Answer:}
+  ## Both PCA and clustering methods are used in unsupervised learning, PCA focuses on reducing the dimensionality of the dataset by transforming variables into orthogonal components, while clustering aims to identify natural groupings or clusters within the data based on similarity.
+
+```
