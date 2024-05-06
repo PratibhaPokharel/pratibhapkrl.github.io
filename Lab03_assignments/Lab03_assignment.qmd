@@ -1,0 +1,53 @@
+---
+title: "EPPS 6323: Lab03 R programming (Exploratory Data Analysis)"
+author: "Pratibha Pokharel"
+format: html
+editor: visual
+---
+
+```{r}
+library(haven) 
+TEDS_2016 <- 
+read_stata("TEDS_2016.dta") 
+
+
+# Remove rows with missing values
+Clean_TEDS_2016 <- na.omit(TEDS_2016)
+```
+
+```{r}
+
+
+## Creating a function: regplot 
+## Combining the lm, plot, and segments functions to create a plot with predicted probabilities for each category of the dependent variable as votetsai
+regplot <- function(x, y, data) {
+  fit <- lm(y ~ x, data = data, family = binomial)  # Fit logistic regression model
+  y_pred <- predict(fit, type = "response")  # Predicted probabilities
+  
+  # Plot observed proportions
+  plot(x, y, pch = 16, col = "blue", xlab = "Predictor Variable", ylab = "Dependent Variable")
+  
+  # Add segments for predicted probabilities
+  segments(x, y, x, y_pred, col = "red")
+}
+
+
+```
+
+```{r}
+# Run a regplot on the dependent variable using:
+# a. Age
+regplot(Clean_TEDS_2016$Age, Clean_TEDS_2016$votetsai, data = Clean_TEDS_2016)
+
+# b. Education
+regplot(Clean_TEDS_2016$Edu, Clean_TEDS_2016$votetsai, data = Clean_TEDS_2016)
+
+# c. Income
+regplot(Clean_TEDS_2016$income, Clean_TEDS_2016$votetsai, data = Clean_TEDS_2016)
+
+
+```
+
+```{r}
+##It was not possible to run with three independent variables.
+```
