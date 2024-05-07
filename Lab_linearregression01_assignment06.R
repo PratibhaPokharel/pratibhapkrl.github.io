@@ -1,0 +1,144 @@
+# Knowledge Mining: Linear regression
+# File: Lab_linearregression01.R
+# Author: "Pratibha Pokharel"
+# Theme: Linear regression
+# Data: MASS, ISLR
+# Adapted from ISLR Chapter 3 Lab
+
+install.packages(c("easypackages","MASS","ISLR","arm"))
+library(easypackages)
+libraries("arm","MASS","ISLR")
+
+## Load datasets from MASS and ISLR packages
+attach(Boston)
+
+### Simple linear regression
+names(Boston)
+# What is the Boston dataset?
+?Boston
+plot(medv~lstat,Boston, pch=20, cex=.8, col="steelblue")
+fit1=lm(medv~lstat,data=Boston)
+fit1
+summary(fit1)
+abline(fit1,col="firebrick")
+names(fit1)
+confint(fit1) # confidence intervals
+
+# Predictions using values in lstat
+predict(fit1,data.frame(lstat=c(0,5,10,15)),interval="confidence") # confidence intervals
+predict(fit1,data.frame(lstat=c(0,5,10,15)),interval="prediction") # prediction intervals
+
+# Prediction interval uses sample mean and takes into account the variability of the estimators for μ and σ.
+# Therefore, the interval will be wider.
+
+### Multiple linear regression
+fit2=lm(medv~lstat+age,data=Boston)
+summary(fit2)
+fit3=lm(medv~.,Boston)
+summary(fit3)
+par(mfrow=c(2,2))
+plot(fit3,pch=20, cex=.8, col="steelblue")
+mtext("fit3", side = 3, line = - 2, cex = 2, outer = TRUE)
+
+# Update function to re-specify the model, i.e. include all but age and indus variables
+fit4=update(fit3,~.-age-indus)
+summary(fit4)
+
+# Set the next plot configuration
+par(mfrow=c(2,2), main="fit4")
+plot(fit4,pch=20, cex=.8, col="steelblue")
+mtext("fit4", side = 3, line = - 2, cex = 2, outer = TRUE)
+
+# Uses coefplot to plot coefficients.  Note the line at 0.
+par(mfrow=c(1,1))
+arm::coefplot(fit4)
+
+### Nonlinear terms and Interactions
+fit5=lm(medv~lstat*age,Boston) # include both variables and the interaction term x1:x2
+summary(fit5)
+
+## I() identity function for squared term to interpret as-is
+## Combine two command lines with semicolon
+fit6=lm(medv~lstat +I(lstat^2),Boston); summary(fit6)
+par(mfrow=c(1,1))
+plot(medv~lstat, pch=20, col="forestgreen")
+
+points(lstat,fitted(fit6),col="firebrick",pch=20)
+fit7=lm(medv~poly(lstat,4))
+points(lstat,fitted(fit7),col="steelblue",pch=20)
+
+###Qualitative predictors
+names(Carseats)
+summary(Carseats)
+fit1=lm(Sales~.+Income:Advertising+Age:Price,Carseats) # add two interaction terms
+summary(fit1)
+attach(Carseats)
+contrasts(Carseats$ShelveLoc) # what is contrasts function?
+?contrasts
+
+### Writing an R function to combine the lm, plot and abline functions to 
+### create a one step regression fit plot function
+regplot=function(x,y){
+  fit=lm(y~x)
+  plot(x,y, pch=20)
+  abline(fit,col="firebrick")
+}
+attach(Carseats)
+regplot(Price,Sales)
+## Allow extra room for additional arguments/specifications
+regplot=function(x,y,...){
+  fit=lm(y~x)
+  plot(x,y,...)
+  abline(fit,col="firebrick")
+}
+regplot(Price,Sales,xlab="Price",ylab="Sales",col="steelblue",pch=20)
+
+## Additional note: try out the coefplot2 package to finetune the coefplots
+##install.packages("coefplot2", repos="http://www.math.mcmaster.ca/bolker/R", type="source")
+## library(coefplot2)
+
+
+
+
+# Exercise 
+# Try other combination of interactive terms
+# How to interpret interactive terms?
+# Read: Brambor, T., Clark, W.R. and Golder, M., 2006. Understanding interaction models: Improving empirical analyses. Political analysis, 14(1), pp.63-82.
+# What are qualitative variables?  What class should they be? 
+
+# Load necessary libraries
+library(haven)
+
+# Read the data
+TEDS_2016 <- read_stata("https://github.com/datageneration/home/blob/master/DataProgramming/data/TEDS_2016.dta?raw=true")
+
+
+# Fit initial logistic regression model
+glm.vt <- glm(votetsai ~ female, data = TEDS_2016, family = binomial)
+
+# Summary of initial model
+summary(glm.vt)
+
+# Diagnostics
+plot(glm.vt)
+
+# Add party ID (KMT, DPP) and demographic variables (age, edu, income)
+glm.vt_extended <- glm(votetsai ~ female + KMT + DPP + age + edu + income, data = TEDS_2016, family = binomial)
+
+# Summary of extended model
+summary(glm.vt_extended)
+
+# Add further variables
+glm.vt_extended <- glm(votetsai ~ female + KMT + DPP + age + edu + income + Independence + Econ_worse + Govt_dont_care + Minnan_father + Mainland_father + Taiwanese, data = TEDS_2016, family = binomial)
+
+# Summary of extended model
+summary(glm.vt_extended)
+
+# Comparison with Stata results
+# Use the provided Stata command to run the logistic regression model and compare coefficients, significance levels, and model fit statistics.
+
+##Answers:
+## Female voters are more likely to vote for President Tsai Ing-wen
+## Edu and income work better in explaining/predicting votetsai
+## Mrobustcan be used to find the best predictor combination (by best consistency) as a prediction set.
+
